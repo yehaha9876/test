@@ -8,7 +8,11 @@
      
 另一个问题是，这么多节点，代码修改了，如何更新至服务器呢？体力活显然是不能够的，或许BOSH也提供了类似方案，没用BOSH也就没深研，找到一个ruby界很有名气的开源工具capistrano。它既可以独立用，也可以集成chef，puppet等。功能还是很强大的。
 
- 
+
+
+\
+
+
 
 一、什么是capistrano
 ====================
@@ -22,12 +26,29 @@
 
 
 
-    
+
+
+ruby写的自动化集群部署工具，官网：[http://www.capistranorb.com/](http://www.capistranorb.com/) 
+源码: [https://github.com/capistrano/](https://github.com/capistrano/)
+
+
+
+\
+
+
+
+\
+
+ 
 
 二、基本原理
 ============
 
- 
+
+
+\
+
+
 
        
 原理很简单，就是利用ssh。ssh上服务器---\>执行脚本---\>返回。虽然简单，但是capistrano做了很多事情，让你比自己写ssh容易太多，而且内置了执行事务，回滚操作。通过capi部署，它会在服务器上维护每次release的版本列表，很方便实现rollback操作。
@@ -58,20 +79,36 @@ gem install capistrano-ext
 
  \
 
- 
+
+
+\
+
+
 
 capistrano-3.0最近刚发布，网上资料比较少，目前用的是2.15版本。
 
- 
+
+
+\
+
+
 
 四、目录结构
 ============
 
- 
+
+
+\
+
+
 
 创建一个目录，cd至目录执行capify .  就会完成工具的初始化。
 
- 
+
+
+\
+
+
 
 
 
@@ -88,12 +125,34 @@ admin@ubuntu:/tmp/test$ capify .
 
 
 
- 
+
+
+
 
 五、部署流程
 ============
 
-     
+
+
+\
+
+
+
+先看一张图 [https://raw.github.com/mpasternacki/capistrano-documentation-support-files/master/default-execution-path/Capistrano%20Execution%20Path.jpg](https://raw.github.com/mpasternacki/capistrano-documentation-support-files/master/default-execution-path/Capistrano%20Execution%20Path.jpg)\
+
+
+
+\
+
+
+
+部署只需要三部：
+
+
+
+\
+
+
 
 
 
@@ -178,7 +237,15 @@ Are you sure to restart dea(y): y
 六、脚本示例
 ============
 
-  
+
+
+dea的部署脚本：
+
+
+
+\
+
+
 
 
 
@@ -284,7 +351,11 @@ end
 如果想用
 stage（即多个环境），可以在config文件夹下，再创建一个目录"deploy"，deploy下创建与stage同名的文件，如part1.rb，part2.rb。如dea，我的part1.rb其实只指定了一组服务器ip
 
- 
+
+
+\
+
+
 
 
 
@@ -295,7 +366,11 @@ role :app,"ip1","ip2","ip3",.......
  \
  有两个地方要说明，也是我在编写脚本时碰到的问题：
 
- 
+
+
+\
+
+
 
 ​1. 服务器端的交互，capi提供的
 sudo或其他方法，只是一次性交互，但如果在执行脚本过程中碰到需要交互的地方，如bundle
@@ -315,12 +390,20 @@ run "bin/dea config/dea.yml"
 
 这就两个来回了，第二句执行的时候就不是在/tmp目录下，而是在/home/admin目录下
 
- 
+
+
+\
+
+
 
 这时可以用
 channel搞定，我的理解是在同一个session当中，可以实现交互的效果。
 
- 
+
+
+\
+
+
 
 
 
@@ -344,7 +427,11 @@ channel搞定，我的理解是在同一个session当中，可以实现交互的
  \
  利用 run的 callback功能。
 
- 
+
+
+\
+
+
 
 ​2.
 当服务端有程序需要后台运行，一般的做法是加&就可以了。但是capi不行。必须再加上nohup才行。但是nohup+&在事实证明中也是不靠谱的。再次因为“capi只管登录--\>执行脚本--\>等待回显，登出返回”
@@ -352,7 +439,19 @@ channel搞定，我的理解是在同一个session当中，可以实现交互的
 后立刻返回，就是登出了，就断了，程序还没来得及提交给后台运行就挂了。所以发必须sleep
 几秒，让程序提交后台运行后再登出。
 
-   
+
+
+\
+
+
+
+如果不sudo启动，可以用run
+
+
+
+\
+
+
 
 
 
@@ -364,7 +463,11 @@ run "(nohup #{deploy_to}/current/bin/dea #{deploy_to}/current/config/dea.yml  &)
 
 错误，因为capi会等待回显，傻傻地等，就是“卡”住了。所以一定要将nohup输出定向到某个地方，可以做到执行脚本的立刻返回。
 
- 
+
+
+\
+
+
 
 
 
@@ -375,7 +478,19 @@ run  "(nohup #{deploy_to}/current/bin/dea #{deploy_to}/current/config/dea.yml >/
  \
  这样才行。
 
-   
+
+
+\
+
+
+
+如果用 sudo，把run换成sudo
+
+
+
+\
+
+
 
 
 
@@ -387,7 +502,11 @@ sudo  "(nohup #{deploy_to}/current/bin/dea #{deploy_to}/current/config/dea.yml >
 
 错误，语法上通不过。这个方法在服务器上是这么执行的，会提示语法错误，用分号之类的都不行。可能shell掌握不太好，没有搞定。
 
- 
+
+
+\
+
+
 
 
 
@@ -399,7 +518,11 @@ executing "sudo -p 'sudo password: ' (nohup /export/servers/jae/dea/current/bin/
  一个方法是写个shell文件，sudo
 去执行shell文件，没有试过，但以下做法的效果是一样的：
 
- 
+
+
+\
+
+
 
 
 
@@ -416,13 +539,33 @@ executing "sudo -p 'sudo password: ' (nohup /export/servers/jae/dea/current/bin/
 
 
 
- 
+
+
+\
+
+
 
 七、结束语
 ==========
 
-   
+
+
+\
+
+
+
+capistrano是很轻量级的，没有像其它集群部署工具那样，要在服务器端安装agent，如puppet等。协议也简单。用的是ssh。capistrano设计之初是为了解决集群部署rails的问题，发展到现在，基本可以部署很多主流的语言框架。capistrano也有很多第三方扩展，方便部署诸如apache，mongo等。详见：[https://github.com/capistrano/capistrano/wiki](https://github.com/capistrano/capistrano/wiki)
+
+
+
+\
+
+
 
 capistrano可以执行shell脚本，这就给了我们很多的自主空间，第三方扩展都是些包装好的东西，可以自己写shell，理论上什么都可以部署。
 
-  
+
+
+\
+
+ 
