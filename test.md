@@ -1,7 +1,8 @@
- 
-
+Capistrano集群部署CloudFoundry 
+==============================
        开源的cloudfoundry部署时有两个必须解决的问题，一是服务器部署，如多少个cc节点，dea节点，官方推荐用BOSH，由于BOSH比较依赖底层IAAS，于是采用了手动部署的方案。
-==================================================================================================================================================================
+
+
 
 
 
@@ -21,7 +22,8 @@
 
 
 
- A remote server automation and deployment tool written in Ruby {style="margin:0.2em 0px 0.5em; padding:0px; direction:ltr; font-family:Enriqueta,serif; font-weight:400; color:rgb(59,82,138); line-height:1.4"}
+
+ A remote server automation and deployment tool written in Ruby {style="margin:0.2em 0px 0.5em; padding:0px; direction:ltr; font-family:Enriqueta,serif; font-weight:400; color:rgb(59,82,138); line-height:1.4"}
 ----------------------------------------------------------------
 
 
@@ -39,7 +41,8 @@ ruby写的自动化集群部署工具，官网：[http://www.capistranorb.com/](
 
 \
 
- 
+
+ 
 
 二、基本原理
 ============
@@ -63,7 +66,8 @@ interactive，区别可以google下。capi默认是non-login，non-interactive�
 
 服务端环境的变化对capi的来说，是不关心的，也不应该关心。但是这种模式也给脚本编写带来一些不便，后面会提到。
 
- 
+
+ 
 
 三、安装
 ========
@@ -77,7 +81,8 @@ gem install capistrano -v 2.15.5
 gem install capistrano-ext
 ~~~~
 
- \
+
+ \
 
 
 
@@ -168,7 +173,8 @@ admin@ubuntu:/tmp/test$ capify .
          deploy:restart                        #重启服务
 ~~~~
 
- \
+
+ \
 
 ~~~~ {.java name="code"}
 admin@ubuntu:~/capistrano/dea$ cap deploy
@@ -363,8 +369,10 @@ stage（即多个环境），可以在config文件夹下，再创建一个目录
 role :app,"ip1","ip2","ip3",.......
 ~~~~
 
- \
- 有两个地方要说明，也是我在编写脚本时碰到的问题：
+
+ \
+
+ 有两个地方要说明，也是我在编写脚本时碰到的问题：
 
 
 
@@ -386,7 +394,8 @@ run "cd /tmp"
 run "bin/dea config/dea.yml"
 ~~~~
 
- \
+
+ \
 
 这就两个来回了，第二句执行的时候就不是在/tmp目录下，而是在/home/admin目录下
 
@@ -424,8 +433,10 @@ channel搞定，我的理解是在同一个session当中，可以实现交互的
     end
 ~~~~
 
- \
- 利用 run的 callback功能。
+
+ \
+
+ 利用 run的 callback功能。
 
 
 
@@ -459,7 +470,8 @@ channel搞定，我的理解是在同一个session当中，可以实现交互的
 run "(nohup #{deploy_to}/current/bin/dea #{deploy_to}/current/config/dea.yml  &) && sleep 3"
 ~~~~
 
- \
+
+ \
 
 错误，因为capi会等待回显，傻傻地等，就是“卡”住了。所以一定要将nohup输出定向到某个地方，可以做到执行脚本的立刻返回。
 
@@ -475,8 +487,10 @@ run "(nohup #{deploy_to}/current/bin/dea #{deploy_to}/current/config/dea.yml  &)
 run  "(nohup #{deploy_to}/current/bin/dea #{deploy_to}/current/config/dea.yml >/dev/null < /dev/null 2>&1 &) && sleep 3"
 ~~~~
 
- \
- 这样才行。
+
+ \
+
+ 这样才行。
 
 
 
@@ -498,7 +512,8 @@ run  "(nohup #{deploy_to}/current/bin/dea #{deploy_to}/current/config/dea.yml >/
 sudo  "(nohup #{deploy_to}/current/bin/dea #{deploy_to}/current/config/dea.yml >/dev/null < /dev/null 2>&1 &) && sleep 3"
 ~~~~
 
- \
+
+ \
 
 错误，语法上通不过。这个方法在服务器上是这么执行的，会提示语法错误，用分号之类的都不行。可能shell掌握不太好，没有搞定。
 
@@ -514,8 +529,10 @@ sudo  "(nohup #{deploy_to}/current/bin/dea #{deploy_to}/current/config/dea.yml >
 executing "sudo -p 'sudo password: ' (nohup /export/servers/jae/dea/current/bin/dea /export/servers/jae/dea/current/config/dea.yml >/dev/null < /dev/null 2>&1 &) && sleep 3"
 ~~~~
 
- \
- 一个方法是写个shell文件，sudo
+
+ \
+
+ 一个方法是写个shell文件，sudo
 去执行shell文件，没有试过，但以下做法的效果是一样的：
 
 
@@ -568,4 +585,5 @@ capistrano可以执行shell脚本，这就给了我们很多的自主空间，�
 
 \
 
- 
+
+ 
