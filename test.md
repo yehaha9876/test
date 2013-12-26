@@ -19,7 +19,7 @@ Capistrano集群部署CloudFoundry
 
 
 
- A remote server automation and deployment tool written in Ruby {style="margin:0.2em 0px 0.5em; padding:0px; direction:ltr; font-family:Enriqueta,serif; font-weight:400; color:rgb(59,82,138); line-height:1.4"}
+ A remote server automation and deployment tool written in Ruby 
 ----------------------------------------------------------------
 
 
