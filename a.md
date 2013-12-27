@@ -1,7 +1,4 @@
-[
- 置顶
- Capistrano集群部署CloudFoundry
-](/k_james/article/details/12711443)
+[置顶Capistrano集群部署CloudFoundry](/k_james/article/details/12711443)
 ==============================================================================
 
 
