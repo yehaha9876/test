@@ -47,6 +47,7 @@ Form 集合按请求正文中参数的名称来索引。Request.Form(element) �
 
 对于 hobby 参数，您可以使用下面的脚本检索这些值。
 
+|---|-----|
 ||
 |＜ html＞ 
 ＜ head＞＜ title＞＜ /title＞＜ /head＞ ＜ body＞ 
