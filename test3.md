@@ -29,7 +29,6 @@ Form 集合通过使用 POST 方法的表格检索邮送到 HTTP 请求正文中
 
 **语法**
 
-||
 |Request.Form(element)[(index)|.Count]|
 
 **参数**
