@@ -18,10 +18,11 @@ http://www.google.com
 
 
 
-#links2
-
 [arbitrary case-insensitive reference text]: https://www.mozilla.org
 
 [1]: http://slashdot.org
 
 [link text itself]: http://www.reddit.com
+
+
+> 1.读取参与人员列表 2.读取参与人员分配量列表 3.读取未认领任务列表 4.针对每个任务，随机安排人员，更新该人员相关的分配数量列表 5.重复上一个动作，直到未认领的任务全部被分配出去
