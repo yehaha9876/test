@@ -15,3 +15,10 @@ http://www.google.com
 [I'm a relative reference to a repository file](../aa)
 
 [You can use numbers for reference-style link definitions][1]
+
+
+[arbitrary case-insensitive reference text]: https://www.mozilla.org
+
+[1]: http://slashdot.org
+
+[link text itself]: http://www.reddit.com
