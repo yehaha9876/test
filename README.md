@@ -113,7 +113,7 @@ Combined emphasis with **asterisks and _underscores_**.
 Strikethrough uses two tildes. ~~Scratch this.~~
 
 
-8. list
+# 8. list
 1. First ordered list item
 2. Another item
 * Unordered sub-list.
@@ -133,11 +133,18 @@ Some text that should be aligned with the above item.
 
 # 9. 链接
 * links:
+
 [I'm an inline-style link](https://www.google.com)
 
 [I'm a reference-style link][Arbitrary case-insensitive reference text]
 
-[I'm a relative reference to a repository file](../blob/master/LICENSE)
+相对地址
+[../LICENSE](../LICENSE)
+
+[aa啊/LICENSE](aa啊/LICENSE)
+
+[/LICENSE/aa啊](/LICENSE/aa啊)
+
 
 [You can use numbers for reference-style link definitions][1]
 
@@ -151,6 +158,7 @@ Some text to show that the reference links can follow later.
 [link text itself]: http://www.reddit.com
 
 * email:
+
 An email <example@example.com> link.
 
 
